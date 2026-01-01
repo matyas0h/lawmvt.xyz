@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>lawmvt</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300..900;1,300..900&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <link rel="stylesheet" href="styles.css" />
+
+  <style>
+
+    main {
+      text-align: left;
+      max-width: 600px;
+      margin: 0 auto 20px;
+      line-height: 1.6;
+      font-size: 1rem;
+    }
+
+    h2.toggle-title {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+      margin-top: 20px;
+    }
+
+    h2.toggle-title i {
+      margin-right: 10px;
+      transition: transform 0.3s ease;
+    }
+
+    h2.toggle-title.active i {
+      transform: rotate(90deg);
+    }
+
+    .toggle-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s ease, padding 0.5s ease;
+      padding: 0;
+    }
+
+    .toggle-content p {
+      margin: 10px 0;
+    }
+  </style>
+</head>
+
+<body>
+
+  <a href="https://lawmvt.xyz"><img src="logo.png" alt="logo" class="logo" /></a>
+
+  <div class="container">
+    <div class="content">
+      <h1 class="title">lawmvt.xyz</h1>
+      <div class="subtitle">info</div>
+
+      <main>
+        <h2 class="toggle-title"><i class="fa-solid fa-chevron-right"></i>privacy policy</h2>
+        <div class="toggle-content">
+          <p>
+            this website does not collect any personal data. we do not use cookies, tracking tools, or analytics. any fonts or icons used, such as Google Fonts and FontAwesome, are loaded from their official libraries and do not collect personal information. by using this site, you agree to this privacy approach.
+          </p>
+        </div>
+
+        <h2 class="toggle-title"><i class="fa-solid fa-chevron-right"></i>terms of service (TOS)</h2>
+        <div class="toggle-content">
+          <p>
+            you may browse and use this website for personal and non-commercial purposes only. all content is for informational or entertainment purposes. do not copy, distribute, or modify it without permission. no data collection – this site does not collect personal information and does not use cookies. the site is provided "as is". we are not responsible for any issues or damages that may occur from using it.<br>
+          </p>
+        </div>
+
+        <h2 class="toggle-title"><i class="fa-solid fa-chevron-right"></i>safety</h2>
+        <div class="toggle-content">
+          <p>
+            this website is completely safe to use. it does not collect personal data, does not use cookies, and does not track users. the website is fully open source and available on GitHub: <a href="https://github.com/matyas0h/lawmvt.xyz" target="_blank">github.com/matyas0h/lawmvt.xyz</a>. all fonts and icons, including Google Fonts and FontAwesome, are loaded from official sources and are safe to use.
+          </p>
+        </div>
+      </main>
+
+      <div class="links">
+        <a href="https://lawmvt.xyz"><i class="fa-solid fa-home"></i><span>back to home page</span></a>
+      </div>
+    </div>
+  </div>
+
+  <a href="info" class="info-button">
+    <i class="fas fa-info"></i>
+  </a>
+
+  <script>
+const toggles = document.querySelectorAll('.toggle-title');
+
+toggles.forEach(title => {
+  title.addEventListener('click', () => {
+    const content = title.nextElementSibling;
+    const isActive = title.classList.contains('active');
+
+    toggles.forEach(t => {
+      t.classList.remove('active');
+      t.nextElementSibling.style.maxHeight = null;
+      t.nextElementSibling.style.padding = '0';
+    });
+
+    if (!isActive) {
+      content.style.maxHeight = content.scrollHeight + "px";
+      content.style.padding = '10px 0';
+      title.classList.add('active');
+    }
+  });
+});
+</script>
+
+
+</body>
+
+</html>
