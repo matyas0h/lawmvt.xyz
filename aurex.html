@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AUREX - Prémiový prodejce vozů</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="page-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="container">
+                <svg viewBox="0 0 200 60" class="logo" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="aurexGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#1d4ed8;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <path d="M 25 45 L 35 15 L 45 45 M 30 35 L 40 35" stroke="url(#aurexGradient)" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M 15 20 L 22 20 M 12 28 L 20 28 M 18 36 L 25 36" stroke="url(#aurexGradient)" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+                    <path d="M 48 30 L 52 25 L 58 25 L 62 30 L 58 35 L 52 35 Z" fill="url(#aurexGradient)" opacity="0.8"/>
+                    <text x="70" y="38" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#1e293b" letter-spacing="2">AUREX</text>
+                    <line x1="70" y1="42" x2="180" y2="42" stroke="url(#aurexGradient)" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <main class="main-content">
+            <div class="container">
+                <div class="hero-section">
+                    <!-- Title -->
+                    <div class="text-center">
+                        <div class="badge">
+                            <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
+                            </svg>
+                            <span>Prémiový výběr vozů</span>
+                        </div>
+                        
+                        <h1 class="hero-title">
+                            Váš vysněný vůz<br>na dosah ruky
+                        </h1>
+                        
+                        <p class="hero-subtitle">
+                            Zadejte model vozu, který si přejete zakoupit, a my se postaráme o zbytek
+                        </p>
+                    </div>
+
+                    <!-- Car Search Box -->
+                    <form id="carSearchForm" class="search-form">
+                        <div class="search-box" id="searchBox">
+                            <div class="search-icon-wrapper">
+                                <div class="search-icon-bg">
+                                    <svg class="icon-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                            
+                            <div class="search-input-wrapper">
+                                <label for="carInput" class="input-label">Model vozu</label>
+                                <input
+                                    id="carInput"
+                                    type="text"
+                                    placeholder="Např. Porsche 911 Turbo S, Lamborghini Aventador..."
+                                    class="car-input"
+                                />
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary" id="submitBtn" disabled>
+                                <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                                </svg>
+                                Pokračovat
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Popular Suggestions -->
+                    <div class="card">
+                        <h2 class="card-subtitle">
+                            <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
+                            </svg>
+                            Populární modely
+                        </h2>
+                        
+                        <div class="suggestions-grid" id="suggestionsGrid"></div>
+                    </div>
+
+                    <!-- Info Cards -->
+                    <div class="info-grid">
+                        <div class="info-card">
+                            <div class="info-icon">
+                                <svg class="icon-md" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                </svg>
+                            </div>
+                            <h3 class="info-title">Široký výběr</h3>
+                            <p class="info-text">Jakýkoliv model vozu dle vašeho přání</p>
+                        </div>
+                        
+                        <div class="info-card">
+                            <div class="info-icon">
+                                <svg class="icon-md" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
+                                </svg>
+                            </div>
+                            <h3 class="info-title">Plná personalizace</h3>
+                            <p class="info-text">Barvy, interiér a další možnosti přizpůsobení</p>
+                        </div>
+                        
+                        <div class="info-card">
+                            <div class="info-icon">
+                                <svg class="icon-md" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                                </svg>
+                            </div>
+                            <h3 class="info-title">Rychlé dodání</h3>
+                            <p class="info-text">Vůz připraven na příjezdové cestě nebo v showroomu</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="home.js"></script>
+</body>
+</html>

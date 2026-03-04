@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dokončení objednávky - AUREX</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="page-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="container header-content">
+                <button onclick="goBack()" class="btn btn-ghost">
+                    <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                    </svg>
+                    Zpět
+                </button>
+                <svg viewBox="0 0 200 60" class="logo" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="aurexGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#1d4ed8;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <path d="M 25 45 L 35 15 L 45 45 M 30 35 L 40 35" stroke="url(#aurexGradient)" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M 15 20 L 22 20 M 12 28 L 20 28 M 18 36 L 25 36" stroke="url(#aurexGradient)" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+                    <path d="M 48 30 L 52 25 L 58 25 L 62 30 L 58 35 L 52 35 Z" fill="url(#aurexGradient)" opacity="0.8"/>
+                    <text x="70" y="38" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#1e293b" letter-spacing="2">AUREX</text>
+                    <line x1="70" y1="42" x2="180" y2="42" stroke="url(#aurexGradient)" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="container-wide">
+                <!-- Title -->
+                <div class="page-header">
+                    <h1 class="page-title">Dokončení objednávky</h1>
+                    <p class="page-subtitle">
+                        <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                        <span id="carModelDisplay"></span>
+                    </p>
+                </div>
+
+                <form id="checkoutForm" class="checkout-grid">
+                    <!-- Left Column -->
+                    <div class="checkout-left">
+                        <!-- User Information -->
+                        <div class="card">
+                            <div class="card-header">
+                                <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                </svg>
+                                Uživatelské informace
+                            </div>
+                            <div class="card-content">
+                                <div class="form-group">
+                                    <label for="robloxUsername">
+                                        <svg class="icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                        </svg>
+                                        Roblox uživatelské jméno
+                                        <span class="label-note">(ne zobrazované jméno)</span>
+                                    </label>
+                                    <input type="text" id="robloxUsername" placeholder="@uživatelskéjméno" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="discordUsername">
+                                        <svg class="icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                                        </svg>
+                                        Discord uživatelské jméno
+                                        <span class="label-note">(ne zobrazované jméno)</span>
+                                    </label>
+                                    <div class="input-group">
+                                        <input type="text" id="discordUsername" placeholder="@uživatelskéjméno" required>
+                                        <button type="button" id="verifyBtn" class="btn btn-outline" onclick="openVerificationModal()">Ověřit</button>
+                                        <button type="button" id="verifiedBtn" class="btn btn-success" style="display: none;" disabled>
+                                            <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <p id="verifiedMessage" class="success-message" style="display: none;">
+                                        <svg class="icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                        </svg>
+                                        Discord účet ověřen
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Customization -->
+                        <div class="card">
+                            <div class="card-header">
+                                <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/>
+                                </svg>
+                                Personalizace vozu
+                            </div>
+                            <div class="card-content color-sections">
+                                <div id="carColorSection"></div>
+                                <div id="interiorColorSection"></div>
+                                <div id="wheelColorSection"></div>
+                                <div id="brakeColorSection"></div>
+                            </div>
+                        </div>
+
+                        <!-- Additional Options -->
+                        <div class="card">
+                            <div class="card-header">
+                                <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                                </svg>
+                                Doplňkové možnosti
+                            </div>
+                            <div class="card-content">
+                                <div class="option-toggle">
+                                    <div class="option-info">
+                                        <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
+                                        </svg>
+                                        <div>
+                                            <p class="option-title">Dodatečný carbon na voze</p>
+                                            <p class="option-desc">Karbon detaily pro sportovní vzhled</p>
+                                        </div>
+                                    </div>
+                                    <label class="switch">
+                                        <input type="checkbox" id="carbonToggle">
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Delivery Options -->
+                        <div class="card">
+                            <div class="card-header">
+                                <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                </svg>
+                                Možnosti dodání
+                            </div>
+                            <div class="card-content delivery-options">
+                                <label class="delivery-option" data-value="driveway">
+                                    <input type="radio" name="delivery" value="driveway" checked>
+                                    <div class="delivery-content">
+                                        <div class="delivery-title">Vůz již na příjezdové cestě</div>
+                                        <div class="delivery-desc">Standardní dodání</div>
+                                        <div class="delivery-price price-free">+0 Kč</div>
+                                    </div>
+                                </label>
+
+                                <label class="delivery-option" data-value="showroom">
+                                    <input type="radio" name="delivery" value="showroom">
+                                    <div class="delivery-content">
+                                        <div class="delivery-title">Vůz v showroomu s mašlí a řádnou péčí</div>
+                                        <div class="delivery-desc">Prémiová prezentace vašeho vozu</div>
+                                        <div class="delivery-price price-premium">+5 000 Kč</div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column - Summary -->
+                    <div class="checkout-right">
+                        <div class="card sticky-summary">
+                            <div class="card-header">
+                                <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+                                </svg>
+                                Souhrn objednávky
+                            </div>
+                            <div class="card-content summary-content">
+                                <div id="summaryDetails" class="summary-details"></div>
+                                
+                                <div class="summary-pricing">
+                                    <div class="pricing-row">
+                                        <span>Základní cena vozu:</span>
+                                        <span>Bude doplněno při kontrole</span>
+                                    </div>
+                                    <div id="deliveryFeeRow" class="pricing-row" style="display: none;">
+                                        <span>Showroom dodání:</span>
+                                        <span id="deliveryFeeAmount"></span>
+                                    </div>
+                                    <div class="pricing-row">
+                                        <span>DPH (10%):</span>
+                                        <span id="taxAmount">Bude vypočteno</span>
+                                    </div>
+                                </div>
+
+                                <div class="summary-total">
+                                    <span>Celkem:</span>
+                                    <span id="totalAmount" class="total-price">Bude doplněno</span>
+                                </div>
+
+                                <div class="alert alert-warning">
+                                    <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                                    </svg>
+                                    <span>Cena vozu bude doplněna po kontrole objednávky našimi specialisty</span>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary btn-full" id="submitOrderBtn" disabled>
+                                    <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+                                    </svg>
+                                    Dokončit objednávku
+                                </button>
+
+                                <p id="formValidationMsg" class="validation-msg">Vyplňte všechny údaje pro pokračování</p>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <!-- Verification Modal -->
+    <div id="verificationModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                </svg>
+                Ověření Discord účtu
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-info">
+                    <p style="margin-bottom: 12px;">Pro pokračování přidejte následující Discord účet do přátel:</p>
+                    <div class="discord-username">aurexdealership</div>
+                </div>
+
+                <div class="alert alert-warning">
+                    <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                    </svg>
+                    <span>Po přidání do přátel klikněte na tlačítko "Potvrzuji" níže</span>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-outline" onclick="closeVerificationModal()">Zrušit</button>
+                    <button type="button" class="btn btn-primary" onclick="confirmVerification()">Potvrzuji</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="checkout.js"></script>
+</body>
+</html>
