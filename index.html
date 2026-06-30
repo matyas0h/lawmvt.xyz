@@ -1,15 +1,695 @@
-<img src="img.png" />
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CS2 Tournament Stats</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
-  html, body {
-    margin: 0;
-    height: 100%;
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+:root{
+  --bg:#050505;
+  --panel:#0d0d0d;
+  --panel2:#141414;
+  --line:rgba(255,255,255,.09);
+  --text:#f2f2f2;
+  --muted:#8a8a8a;
+  --yellow:#f4e436;
+  --yellow2:#b7a900;
+}
+
+body{
+  min-height:100vh;
+  font-family:"Inter",Arial,sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(circle at 15% 10%,rgba(244,228,54,.14),transparent 28%),
+    radial-gradient(circle at 90% 0%,rgba(255,255,255,.07),transparent 24%),
+    linear-gradient(135deg,#050505,#111);
+  padding:22px;
+}
+
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  background:
+    linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+  background-size:44px 44px;
+  mask-image:linear-gradient(to bottom,#000,transparent 85%);
+}
+
+.app{
+  max-width:1240px;
+  margin:auto;
+}
+
+.header{
+  min-height:430px;
+  border:1px solid var(--line);
+  border-radius:28px;
+  background:
+    linear-gradient(135deg,rgba(0,0,0,.88),rgba(0,0,0,.45)),
+    radial-gradient(circle at 65% 40%,rgba(244,228,54,.13),transparent 25%),
+    linear-gradient(135deg,#111,#050505);
+  overflow:hidden;
+  position:relative;
+  padding:28px;
+  box-shadow:0 35px 100px rgba(0,0,0,.55);
+}
+
+.header:before{
+  content:"";
+  position:absolute;
+  inset:70px 0 0 48%;
+  background:repeating-linear-gradient(
+    90deg,
+    transparent 0 14px,
+    rgba(255,255,255,.055) 14px 16px
+  );
+  transform:skewX(-10deg);
+  opacity:.7;
+}
+
+.nav{
+  position:relative;
+  z-index:2;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:20px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  font-weight:900;
+}
+
+.mark{
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  background:var(--yellow);
+  color:#111;
+  display:grid;
+  place-items:center;
+  font-weight:900;
+  box-shadow:0 0 35px rgba(244,228,54,.25);
+}
+
+.nav-links{
+  display:flex;
+  gap:8px;
+  background:rgba(255,255,255,.04);
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:6px;
+  backdrop-filter:blur(16px);
+}
+
+.nav-links span{
+  color:#bdbdbd;
+  font-size:13px;
+  font-weight:700;
+  padding:9px 13px;
+  border-radius:999px;
+}
+
+.nav-links span.active{
+  color:#111;
+  background:var(--yellow);
+}
+
+.hero{
+  position:relative;
+  z-index:2;
+  max-width:780px;
+  margin-top:96px;
+}
+
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  color:var(--yellow);
+  border:1px solid rgba(244,228,54,.25);
+  background:rgba(244,228,54,.08);
+  border-radius:999px;
+  padding:8px 12px;
+  font-size:12px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+}
+
+h1{
+  margin-top:18px;
+  font-size:clamp(48px,8vw,96px);
+  line-height:.9;
+  letter-spacing:-5px;
+  font-weight:800;
+}
+
+h1 span{
+  color:var(--yellow);
+}
+
+.hero p{
+  margin-top:22px;
+  max-width:560px;
+  color:#aaa;
+  line-height:1.6;
+  font-size:16px;
+  font-weight:500;
+}
+
+.float-card{
+  position:absolute;
+  right:28px;
+  bottom:28px;
+  width:310px;
+  padding:20px;
+  border:1px solid var(--line);
+  border-radius:22px;
+  background:rgba(15,15,15,.72);
+  backdrop-filter:blur(18px);
+  z-index:3;
+}
+
+.float-card small{
+  color:var(--muted);
+  font-weight:800;
+}
+
+.float-card strong{
+  display:block;
+  margin-top:8px;
+  font-size:28px;
+  color:var(--yellow);
+}
+
+.controls{
+  margin:18px 0;
+  display:grid;
+  grid-template-columns:1fr 260px;
+  gap:12px;
+}
+
+input,select{
+  width:100%;
+  background:rgba(15,15,15,.86);
+  border:1px solid var(--line);
+  color:#fff;
+  border-radius:16px;
+  padding:15px 16px;
+  font:inherit;
+  font-weight:700;
+  outline:none;
+}
+
+input:focus,select:focus{
+  border-color:rgba(244,228,54,.55);
+}
+
+.mode-picker{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+  gap:12px;
+  margin-bottom:18px;
+}
+
+.mode-btn{
+  min-height:122px;
+  cursor:pointer;
+  text-align:left;
+  color:#fff;
+  border:1px solid var(--line);
+  border-radius:22px;
+  padding:18px;
+  background:
+    linear-gradient(145deg,rgba(255,255,255,.06),rgba(255,255,255,.015)),
+    #0d0d0d;
+  font:inherit;
+  transition:.18s ease;
+}
+
+.mode-btn:hover{
+  transform:translateY(-3px);
+  border-color:rgba(244,228,54,.4);
+}
+
+.mode-btn.active{
+  border-color:var(--yellow);
+  background:
+    radial-gradient(circle at top right,rgba(244,228,54,.22),transparent 45%),
+    #111;
+}
+
+.mode-btn b{
+  display:block;
+  font-size:18px;
+  margin-bottom:10px;
+}
+
+.mode-btn span{
+  color:var(--muted);
+  font-size:13px;
+  font-weight:700;
+}
+
+.board{
+  border:1px solid var(--line);
+  border-radius:28px;
+  background:rgba(10,10,10,.88);
+  padding:22px;
+  box-shadow:0 30px 90px rgba(0,0,0,.35);
+}
+
+.board-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+  gap:16px;
+  margin-bottom:18px;
+}
+
+.board-head h2{
+  font-size:30px;
+  letter-spacing:-1px;
+}
+
+.board-head p{
+  color:var(--muted);
+  font-weight:700;
+  margin-top:5px;
+}
+
+.sorts{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-bottom:18px;
+}
+
+.sorts button{
+  border:1px solid var(--line);
+  background:#121212;
+  color:#aaa;
+  border-radius:999px;
+  padding:10px 14px;
+  font:inherit;
+  font-size:13px;
+  font-weight:800;
+  cursor:pointer;
+}
+
+.sorts button.active{
+  background:var(--yellow);
+  color:#111;
+  border-color:var(--yellow);
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(255px,1fr));
+  gap:12px;
+}
+
+.player-card{
+  display:none;
+  background:
+    linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.02)),
+    #101010;
+  border:1px solid var(--line);
+  border-radius:22px;
+  padding:18px;
+}
+
+.player-card.show{
+  display:block;
+}
+
+.card-top{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:18px;
+}
+
+.player{
+  font-size:22px;
+  font-weight:900;
+  letter-spacing:-.5px;
+}
+
+.team{
+  color:var(--muted);
+  font-size:13px;
+  font-weight:700;
+  margin-top:4px;
+}
+
+.rank{
+  color:var(--yellow);
+  font-size:26px;
+  font-weight:900;
+}
+
+.main-stat{
+  background:#080808;
+  border:1px solid var(--line);
+  border-radius:17px;
+  padding:15px;
+  margin-bottom:12px;
+}
+
+.main-stat small,.meta small{
+  display:block;
+  color:var(--muted);
+  font-size:12px;
+  font-weight:800;
+  margin-bottom:6px;
+}
+
+.main-stat strong{
+  color:var(--yellow);
+  font-size:28px;
+  font-weight:900;
+}
+
+.meta{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+
+.meta div{
+  background:#0a0a0a;
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:14px;
+  padding:11px;
+}
+
+.meta b{
+  font-size:13px;
+}
+
+.valid{color:#8aff7a}
+.pending{color:var(--yellow)}
+.lost,.invalid{color:#ff5d5d}
+
+.empty{
+  display:none;
+  text-align:center;
+  color:var(--muted);
+  font-weight:800;
+  border:1px dashed rgba(255,255,255,.18);
+  border-radius:20px;
+  padding:50px 16px;
+}
+
+.empty.show{
+  display:block;
+}
+
+@media(max-width:850px){
+  body{padding:12px}
+  .header{min-height:auto;padding:22px}
+  .nav{align-items:flex-start;flex-direction:column}
+  .nav-links{width:100%;overflow:auto}
+  .hero{margin-top:54px}
+  h1{letter-spacing:-3px}
+  .float-card{
+    position:relative;
+    right:auto;
+    bottom:auto;
+    width:100%;
+    margin-top:32px;
+  }
+  .controls{grid-template-columns:1fr}
+  .board-head{align-items:flex-start;flex-direction:column}
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <header class="header">
+    <nav class="nav">
+      <div class="brand">
+        <div class="mark">T</div>
+        <div>
+          LAWÍSKOVI TURNAJE
+          <div style="color:#777;font-size:12px;font-weight:700;">CS2 Turnaje</div>
+        </div>
+      </div>
+    </nav>
+
+    <section class="hero">
+      <div class="badge">PRIVATE</div>
+      <h1>Lawískovi <br><span>turnaje.</span></h1>
+      <p>
+        Reálně všichni jsme špatný jak říkal Honza nemáme aim vůbec takže tohle nemá vůbec smysl jakoby no nic co dál říct já už nevím co dál psát.
+      </p>
+    </section>
+
+    <div class="float-card">
+      <small>Selected gamemode</small>
+      <strong id="selectedModeText">None</strong>
+    </div>
+  </header>
+
+  <section class="controls">
+    <input id="searchInput" placeholder="Search player, team, map, record...">
+    <select id="modeSelect">
+      <option value="">Choose gamemode</option>
+    </select>
+  </section>
+
+  <section class="mode-picker" id="modePicker"></section>
+
+  <main class="board">
+    <div class="board-head">
+      <div>
+        <h2 id="boardTitle">Choose a gamemode</h2>
+        <p id="boardInfo">No stats are shown until a mode is selected.</p>
+      </div>
+    </div>
+
+    <div class="sorts">
+      <button class="active" data-sort="rank">Rank</button>
+      <button data-sort="player">Player</button>
+      <button data-sort="score">Score / Time</button>
+      <button data-sort="date">Newest</button>
+    </div>
+
+    <section class="grid" id="grid">
+
+      <!-- EDIT YOUR STATS HERE -->
+
+      <article class="player-card"
+        data-mode="Juggernaut"
+        data-rank="1"
+        data-player="Law"
+        data-team="CZ/SK"
+        data-map="de_mirage"
+        data-score="18:10.00"
+        data-record="Server Record"
+        data-result="Valid"
+        data-date="2026-06-30">
+
+        <div class="card-top">
+          <div>
+            <div class="player">Law</div>
+            <div class="team">CZ/SK</div>
+          </div>
+          <div class="rank">#1</div>
+        </div>
+
+        <div class="main-stat">
+          <small>Time</small>
+          <strong>18:10.00</strong>
+        </div>
+
+        <div class="meta">
+          <div><small>Map</small><b>de_mirage</b></div>
+          <div><small>Record</small><b>Server Record</b></div>
+          <div><small>Result</small> <a href="https://youtu.be/Z-_6CdLoTcA" style="text-decoration-color:#22c55e;"><b class="valid">Valid</b></a></div>
+          <div><small>Date</small><b>2026-06-30</b></div>
+        </div>
+      </article>
+
+    </section>
+
+    <div class="empty show" id="emptyState">
+      Choose a gamemode to show stats.
+    </div>
+  </main>
+
+</div>
+
+<script>
+const cards = Array.from(document.querySelectorAll(".player-card"));
+const modeSelect = document.getElementById("modeSelect");
+const modePicker = document.getElementById("modePicker");
+const searchInput = document.getElementById("searchInput");
+const boardTitle = document.getElementById("boardTitle");
+const boardInfo = document.getElementById("boardInfo");
+const selectedModeText = document.getElementById("selectedModeText");
+const emptyState = document.getElementById("emptyState");
+const grid = document.getElementById("grid");
+const sortButtons = document.querySelectorAll(".sorts button");
+
+let selectedMode = "";
+let currentSort = "rank";
+
+function getModes(){
+  return [...new Set(cards.map(card => card.dataset.mode))];
+}
+
+function scoreValue(value){
+  const time = value.match(/^(\d+):(\d+)(\.\d+)?$/);
+
+  if(time){
+    return Number(time[1]) * 60 + Number(time[2]) + Number(time[3] || 0);
   }
 
-  img {
-    width: 100vw;
-    height: 100vh;
-    object-fit: fill;
-    display: block;
+  const number = value.match(/-?\d+(\.\d+)?/);
+  if(number) return Number(number[0]);
+
+  return value.toLowerCase();
+}
+
+function sortCards(list){
+  return list.sort((a,b)=>{
+    if(currentSort === "rank"){
+      return Number(a.dataset.rank) - Number(b.dataset.rank);
+    }
+
+    if(currentSort === "player"){
+      return a.dataset.player.localeCompare(b.dataset.player);
+    }
+
+    if(currentSort === "score"){
+      const av = scoreValue(a.dataset.score);
+      const bv = scoreValue(b.dataset.score);
+
+      if(av < bv) return -1;
+      if(av > bv) return 1;
+      return 0;
+    }
+
+    if(currentSort === "date"){
+      return new Date(b.dataset.date) - new Date(a.dataset.date);
+    }
+  });
+}
+
+function buildModes(){
+  getModes().forEach(mode=>{
+    const count = cards.filter(card => card.dataset.mode === mode).length;
+
+    const option = document.createElement("option");
+    option.value = mode;
+    option.textContent = mode;
+    modeSelect.appendChild(option);
+
+    const button = document.createElement("button");
+    button.className = "mode-btn";
+    button.dataset.mode = mode;
+    button.innerHTML = `
+      <b>${mode}</b>
+      <span>${count} result${count === 1 ? "" : "s"}</span>
+    `;
+
+    button.addEventListener("click",()=>{
+      selectedMode = mode;
+      modeSelect.value = mode;
+      render();
+    });
+
+    modePicker.appendChild(button);
+  });
+}
+
+function render(){
+  const search = searchInput.value.toLowerCase();
+
+  cards.forEach(card => card.classList.remove("show"));
+
+  document.querySelectorAll(".mode-btn").forEach(button=>{
+    button.classList.toggle("active", button.dataset.mode === selectedMode);
+  });
+
+  if(!selectedMode){
+    boardTitle.textContent = "Choose a gamemode";
+    boardInfo.textContent = "No stats are shown until a mode is selected.";
+    selectedModeText.textContent = "None";
+    emptyState.textContent = "Choose a gamemode to show stats.";
+    emptyState.classList.add("show");
+    return;
   }
-</style>
+
+  let visibleCards = cards.filter(card=>{
+    const cardText = Object.values(card.dataset).join(" ").toLowerCase();
+
+    return card.dataset.mode === selectedMode &&
+      cardText.includes(search);
+  });
+
+  visibleCards = sortCards(visibleCards);
+
+  visibleCards.forEach(card=>{
+    grid.appendChild(card);
+    card.classList.add("show");
+  });
+
+  boardTitle.textContent = selectedMode;
+  boardInfo.textContent = `${visibleCards.length} result${visibleCards.length === 1 ? "" : "s"} shown`;
+  selectedModeText.textContent = selectedMode;
+
+  if(visibleCards.length === 0){
+    emptyState.textContent = "No stats found.";
+    emptyState.classList.add("show");
+  }else{
+    emptyState.classList.remove("show");
+  }
+}
+
+modeSelect.addEventListener("change",()=>{
+  selectedMode = modeSelect.value;
+  render();
+});
+
+searchInput.addEventListener("input",render);
+
+sortButtons.forEach(button=>{
+  button.addEventListener("click",()=>{
+    sortButtons.forEach(btn => btn.classList.remove("active"));
+    button.classList.add("active");
+    currentSort = button.dataset.sort;
+    render();
+  });
+});
+
+buildModes();
+render();
+</script>
+
+</body>
+</html>
